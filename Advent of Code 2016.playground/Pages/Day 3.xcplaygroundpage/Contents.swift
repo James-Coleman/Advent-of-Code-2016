@@ -1626,3 +1626,27 @@ let mappedInput = puzzleInput.components(separatedBy: "\n")
 let validTriangles = mappedInput.filter { isValidTriangle(one: $0[0], two: $0[1], three: $0[2]) }
 
 print(validTriangles.count) // 869 (correct!)
+
+// MARK: Part 2
+
+let verticalTriangles = mappedInput.enumerated().map { (offset, element) -> [[Int]] in
+        let mod = offset % 3
+        
+        if mod == 0 {
+            let (firstRow, secondRow, thirdRow) = (mappedInput[offset], mappedInput[offset + 1], mappedInput[offset + 2])
+            
+            let firstTriangle = [firstRow[0], secondRow[0], thirdRow[0]]
+            let secondTriangle = [firstRow[1], secondRow[1], thirdRow[1]]
+            let thirdTriangle = [firstRow[2], secondRow[2], thirdRow[2]]
+            
+            return [firstTriangle, secondTriangle, thirdTriangle]
+        } else {
+            return []
+        }
+}.flatMap { $0 }
+
+//print(verticalTriangles)
+
+let validTrianglesPart2 = verticalTriangles.filter { isValidTriangle(one: $0[0], two: $0[1], three: $0[2]) }
+
+print(validTrianglesPart2.count) // 1544 (correct!)
